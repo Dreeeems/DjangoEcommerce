@@ -1,0 +1,93 @@
+{% extends 'core/base.html' %} {% block title %} Sign up {% endblock %}
+<!-- Form Section -->
+{% block content %}
+<div class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-screen-xl bg-white p-8 shadow-lg rounded-lg flex">
+    <div class="w-1/2 p-4 border-r">
+      <h2 class="text-2xl font-semibold mb-4">Form</h2>
+      <form
+        class="space-y-4"
+        method="POST"
+        action="."
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <div>
+          <label for="category" class="block font-semibold">Category :</label>
+          {{ form.category }}
+        </div>
+        <div>
+          <label for="name" class="block font-semibold">Name :</label>
+          {{ form.name }}
+        </div>
+        <div>
+          <label for="description" class="block font-semibold"
+            >Description :</label
+          >
+          {{ form.description }}
+        </div>
+        <div>
+          <label for="price" class="block font-semibold">Price :</label>
+          {{ form.price }}
+        </div>
+        <div>
+          <label for="image" class="block font-semibold">Image :</label>
+          {{ form.image }}
+        </div>
+        {% if form.errors or form.non_field_errors %}
+        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+          {% for field in form %} {{field.errors}} {% endfor %}
+        </div>
+        {% endif %}
+        <button
+          type="submit"
+          class="w-full text-white bg-teal-600 hover:bg-teal-700 font-medium rounded-lg text-sm px-5 py-2.5"
+        >
+          Create item
+        </button>
+      </form>
+    </div>
+
+    <!-- Real-time Preview Section -->
+    <div class="w-1/2 p-4">
+      <h2 class="text-2xl font-semibold mb-4">Real-time Preview</h2>
+      <div class="border border-gray-300 rounded p-4">
+        <h3 class="text-xl font-semibold mb-2" id="previewName">Item Name</h3>
+        <p class="text-gray-600 mb-2" id="previewDescription">
+          Item Description
+        </p>
+        <p class="text-green-600 font-semibold" id="previewPrice">
+          $ Item Price
+        </p>
+        <img src="#" alt="Image Preview" id="previewImage" class="mt-4" />
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById("name").addEventListener("input", function () {
+    document.getElementById("previewName").textContent = this.value;
+  });
+
+  document.getElementById("description").addEventListener("input", function () {
+    document.getElementById("previewDescription").textContent = this.value;
+  });
+
+  document.getElementById("price").addEventListener("input", function () {
+    document.getElementById("previewPrice").textContent = "$ " + this.value;
+  });
+
+  document.getElementById("image").addEventListener("change", function () {
+    const previewImage = document.getElementById("previewImage");
+    if (this.files && this.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewImage.src = e.target.result;
+      };
+      reader.readAsDataURL(this.files[0]);
+    } else {
+      previewImage.src = "";
+    }
+  });
+</script>
+{% endblock %}
