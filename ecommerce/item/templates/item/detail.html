@@ -1,0 +1,57 @@
+{%extends 'core/base.html'%} {%block title%} {{item.name}} {%endblock%}
+
+<!---->
+{%block content%}
+<div class="grid grid-cols-5 gap-6">
+  <div class="col-span-3">
+    <img src="{{item.image.url}}" class="rounded-xl" />
+  </div>
+
+  <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
+    <div>
+      <h2 class="text-xl">{{item.name}}</h2>
+    </div>
+    <div>
+      <span class="text-md semibold">Sell by: {{item.create_by}}</span>
+    </div>
+    <div class="py-4">
+      <p class="text-lg semibold">Item description: {{item.description}}</p>
+    </div>
+
+    <a
+      href="#"
+      class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white hover:bg-teal-700 rounded-xl"
+    >
+      Contact vendor
+    </a>
+  </div>
+</div>
+
+<div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+  <h2 class="mb-12 text-2xl text-center">Related items</h2>
+
+  <div class="grid grid-cols-3 gap-3">
+    {%for item in related_items%}
+    <div class="rounded overflow-hidden shadow-lg">
+      <a href="{%url 'item:detail' item.id%}">
+        <img
+          class="w-full h-72 object-cover"
+          src="{{item.image.url}}"
+          alt="{{item.name}}"
+        />
+        <div class="px-6 py-4">
+          <div class="font-bold text-xl mb-2">{{item.name}}</div>
+          <p class="text-gray-700 text-base">{{item.description}}</p>
+        </div>
+        <div class="px-6 pt-4 pb-2">
+          <span
+            class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+            >{{item.category}}</span
+          >
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{%endblock%}
