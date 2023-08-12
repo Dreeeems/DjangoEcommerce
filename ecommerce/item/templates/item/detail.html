@@ -1,29 +1,36 @@
-{%extends 'core/base.html'%} {%block title%} {{item.name}} {%endblock%}
-
-<!---->
-{%block content%}
-<div class="grid grid-cols-5 gap-6">
-  <div class="col-span-3">
-    <img src="{{item.image.url}}" class="rounded-xl" />
+{% extends 'core/base.html' %} {% block title %} {{ item.name }} {% endblock %}
+{% block content %}
+<div class="flex flex-col md:flex-row md:space-x-8 p-6">
+  <!-- Product Image -->
+  <div class="md:w-1/2">
+    <img
+      src="{{ item.image.url }}"
+      alt="{{ item.name }}"
+      class="rounded-xl w-full h-auto max-h-96"
+    />
   </div>
 
-  <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
-    <div>
-      <h2 class="text-xl">{{item.name}}</h2>
-    </div>
-    <div>
-      <span class="text-md semibold">Sell by: {{item.create_by}}</span>
-    </div>
+  <!-- Product Information -->
+  <div class="md:w-1/2 p-4 bg-gray-100 rounded-xl">
+    <h2 class="text-2xl mb-4">{{ item.name }}</h2>
+    <p class="text-md font-semibold">Sell by: {{ item.created_by }}</p>
     <div class="py-4">
-      <p class="text-lg semibold">Item description: {{item.description}}</p>
+      <p class="text-lg font-semibold">Item description:</p>
+      <p class="text-gray-700">{{ item.description }}</p>
     </div>
     {% if request.user == item.create_by %}
-    <div>
+    <div class="mt-6 flex flex-col md:flex-row gap-4">
       <a
-        href="{%url 'item:delete' item.id%}"
-        class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white hover:bg-red-700 rounded-xl"
+        href="{% url 'item:delete' item.id %}"
+        class="inline-block px-6 py-3 text-lg font-semibold bg-red-500 text-white hover:bg-red-700 rounded-xl"
       >
-        Delete your item ?
+        Delete
+      </a>
+      <a
+        href="{%url 'item:edit' item.id%}"
+        class="inline-block px-6 py-3 text-lg font-semibold bg-blue-500 text-white hover:bg-blue-700 rounded-xl"
+      >
+        Edit
       </a>
     </div>
     {% endif %}
@@ -38,29 +45,29 @@
 
 <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
   <h2 class="mb-12 text-2xl text-center">Related items</h2>
-
-  <div class="grid grid-cols-3 gap-3">
-    {%for item in related_items%}
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+    {% for related_item in related_items %}
     <div class="rounded overflow-hidden shadow-lg">
-      <a href="{%url 'item:detail' item.id%}">
+      <a href="{% url 'item:detail' related_item.id %}">
         <img
           class="w-full h-72 object-cover"
-          src="{{item.image.url}}"
-          alt="{{item.name}}"
+          src="{{ related_item.image.url }}"
+          alt="{{ related_item.name }}"
         />
         <div class="px-6 py-4">
-          <div class="font-bold text-xl mb-2">{{item.name}}</div>
-          <p class="text-gray-700 text-base">{{item.description}}</p>
+          <div class="font-bold text-xl mb-2">{{ related_item.name }}</div>
+          <p class="text-gray-700 text-base">{{ related_item.description }}</p>
         </div>
         <div class="px-6 pt-4 pb-2">
           <span
             class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-            >{{item.category}}</span
           >
+            {{ related_item.category }}
+          </span>
         </div>
       </a>
     </div>
     {% endfor %}
   </div>
 </div>
-{%endblock%}
+{% endblock %}
