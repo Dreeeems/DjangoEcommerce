@@ -1,0 +1,152 @@
+{% extends 'core/base.html' %} {% block title %} Items {% endblock title %}
+<!-- block-->
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 pb-6">
+  <!-- Sidebar for Large Screens -->
+  <div class="md:col-span-1 hidden md:block">
+    <div class="bg-gray-200 p-4 rounded-lg">
+      <form method="get" action="{%url 'item:items'%}">
+        <input
+          name="query"
+          class="w-full py-4 px-6 border rounded-xl"
+          type="text"
+          value=""
+        />
+        <button
+          class="mt-2 py-4 px-8 text-lg bg-teal-500 text-white rounded-xl"
+        >
+          Search
+        </button>
+      </form>
+      <hr class="my-6" />
+      <p class="font-semibold">Categories</p>
+      <ul>
+        {% for category in categories %}
+        <li
+          class="py-2 px-2 rounded-xl {% if category.id == category_id %} bg-gray-300 {%endif%}"
+        >
+          <a
+            href="{% url 'item:items'%}?query={{ query }}&category={{category.id}}"
+            >{{category.name}}</a
+          >
+        </li>
+        {% endfor %}
+      </ul>
+      <hr class="my-6" />
+      <p class="font-semibold">Clear filters</p>
+      <ul>
+        <li>
+          <a
+            href="{%url 'item:items'%}"
+            class="mt-2 py-2 px-4 inline-block bg-yellow-500 text-lg text-white rounded-lg"
+          >
+            Clear
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Sidebar Popup for Mobile -->
+  <button
+    id="sidebarToggle"
+    class="md:hidden mt-4 mx-4 py-2 px-4 bg-gray-200 text-gray-700 rounded-lg"
+  >
+    Filter
+  </button>
+  <div
+    id="sidebarPopup"
+    class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden md:hidden"
+  >
+    <div class="bg-gray-200 p-4 rounded-lg absolute top-0 h-full w-3/4 right-0">
+      <button
+        id="closeSidebarPopup"
+        class="mt-2 mb-4 py-2 px-4 bg-red-500 text-white rounded-lg"
+      >
+        Close
+      </button>
+      <form method="get" action="{%url 'item:items'%}">
+        <input
+          name="query"
+          class="w-full py-4 px-6 border rounded-xl"
+          type="text"
+          value=""
+        />
+        <button
+          class="mt-2 py-4 px-8 text-lg bg-teal-500 text-white rounded-xl"
+        >
+          Search
+        </button>
+      </form>
+      <hr class="my-6" />
+      <p class="font-semibold">Categories</p>
+      <ul>
+        {% for category in categories %}
+        <li
+          class="py-2 px-2 rounded-xl {% if category.id == category_id %} bg-gray-300 {%endif%}"
+        >
+          <a
+            href="{% url 'item:items'%}?query={{ query }}&category={{category.id}}"
+            >{{category.name}}</a
+          >
+        </li>
+        {% endfor %}
+      </ul>
+      <hr class="my-6" />
+      <p class="font-semibold">Clear filters</p>
+      <ul>
+        <li>
+          <a
+            href="{%url 'item:items'%}"
+            class="mt-2 py-2 px-4 inline-block bg-yellow-500 text-lg text-white rounded-lg"
+          >
+            Clear
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Items Grid -->
+  <div
+    class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+  >
+    {% for item in items %}
+    <div class="rounded overflow-hidden shadow-lg">
+      <a href="{% url 'item:detail' item.id %}">
+        <img
+          class="w-full h-72 object-cover"
+          src="{{ item.image.url }}"
+          alt="{{ item.name }}"
+        />
+        <div class="px-6 py-4">
+          <div class="font-bold text-xl mb-2">{{ item.name }}</div>
+          <p class="text-gray-700 text-base">{{ item.description }}</p>
+        </div>
+        <div class="px-6 pt-4 pb-2">
+          <span
+            class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+          >
+            {{ item.category }}
+          </span>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  const sidebarPopup = document.getElementById("sidebarPopup");
+  const closeSidebarPopup = document.getElementById("closeSidebarPopup");
+
+  sidebarToggle.addEventListener("click", () => {
+    sidebarPopup.style.display = "block";
+  });
+
+  closeSidebarPopup.addEventListener("click", () => {
+    sidebarPopup.style.display = "none";
+  });
+</script>
+{% endblock content %}
