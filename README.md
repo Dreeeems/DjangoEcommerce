@@ -17,7 +17,7 @@ An e-commerce web application built with Django, allowing users to browse and pu
 🎨 HTML, CSS, JavaScript  
 💾 PostgreSQL (Database)  
 🔐 Django Authentication  
-📦 Third-party Packages (e.g., Stripe for payments)
+📦 Third-party Packages (e.g., Stripe for payments) (if you want)
 
 ## Installation
 
