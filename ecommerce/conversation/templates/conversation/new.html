@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %} {% block title %}New Conversation{% endblock %}
+{% block content %}
+<div class="max-w-xl mx-auto py-8">
+  <h1 class="text-3xl mb-4">New Conversation</h1>
+
+  <div class="flex">
+    <div class="w-1/2 p-4 border-r">
+      <h2 class="text-2xl font-semibold mb-4">Form</h2>
+      <form
+        class="space-y-4"
+        method="POST"
+        action="."
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <div class="space-y-4">{{ form.as_p }}</div>
+        {% if form.errors or form.non_field_errors %}
+        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+          {% for field in form %} {{ field.errors }} {% endfor %}
+        </div>
+        {% endif %}
+        <button
+          type="submit"
+          class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg text-sm px-5 py-2.5"
+        >
+          Save
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
